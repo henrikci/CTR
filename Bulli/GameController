@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GameController : MonoBehaviour {
+	private Rigidbody2D bull;
+	private GameObject ball;
+	private ButtonController bLeft;
+	private ButtonController bRight;
+	private ButtonController bUp;
+	private ButtonController bDown;
+	private float ballSpeed = 100;
+	// Use this for initialization
+	void Start () {
+//		Debug.Log ("SWAG YOLO");
+//		ball = GameObject.Find ("Ball");
+		bull = GetComponent<Rigidbody2D> ();
+//		Vector3 move = new Vector3 (2.0f, 4.0f, 0);
+//		ball.transform.Translate (2f, 4f, 0);
+		bLeft = GameObject.Find("ButtonLeft").GetComponent<ButtonController>();
+		bRight = GameObject.Find ("ButtonRight").GetComponent<ButtonController> ();
+		bUp = GameObject.Find ("ButtonUp").GetComponent<ButtonController> ();
+		bDown = GameObject.Find ("ButtonDown").GetComponent<ButtonController> ();
+//		ball.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (3f, 13f));
+
+//		bLeft.onClick.AddListener ();
+	
+	
+	
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		if (bLeft.getButtonPressed () || Input.GetKey(KeyCode.LeftArrow)) {
+			bull.transform.Translate (-0.01f * ballSpeed, 0, 0);
+		}
+		if (bRight.getButtonPressed () || Input.GetKey(KeyCode.RightArrow)) {
+			bull.transform.Translate (0.01f * ballSpeed, 0, 0);
+		}
+		if (bUp.getButtonPressed () || Input.GetKey(KeyCode.Space)) {
+//			ball.transform.Translate (0, 0.05f * ballSpeed, 0);
+			Pomppaus();
+		}
+		if (bDown.getButtonPressed () || Input.GetKey(KeyCode.DownArrow)) {
+			bull.transform.Translate (0, -0.01f * ballSpeed, 0);
+		}
+//		ball.transform.Translate (0.01f, 0.001f, 0);
+//		Debug.Log (bLeft.getButtonPressed ());
+
+	}
+	public Vector2 jumppi;
+	public bool jumping = false;
+	public void Pomppaus(){
+
+		if(Input.GetKey(KeyCode.Space) && jumping == false){
+//			ball.transform.Translate(0,0.1f * ballSpeed,0);
+			bull.AddForce(jumppi, ForceMode2D.Impulse);
+			jumping = true; 
+		} jumping = false;
+
+
+	}
+}
