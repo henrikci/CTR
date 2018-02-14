@@ -2,66 +2,79 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading;
+using System;
+
 
 public class BullController : MonoBehaviour {
 	//instanssimuuttujat
-	private float bullSpeed = 12;
 	private Rigidbody2D bull;
-	private float maxSpeed = 180f;
-	private Vector2 vertical = new Vector2 (0.4f,0f);
-
+	private Animator anim;
+	private bool facingLeft = false;
+	private bool playerMoving;
+	private float maxSpeed = 140f;
+	private Vector2 vertical = new Vector2 (120f,0f);
+	//hyppiminen
+	private Vector2 jumppi = new Vector2 (0f, 150f);
+	private bool isJumping = false;
 	//törmäys ja hypyn nollaaminen
 	void OnCollisionEnter2D(Collision2D collision){
-		transform.Translate (0, 0.1f, 0);
 		isJumping = false;
 	}
 
 	void Start(){
 		bull = GetComponent<Rigidbody2D>();
+		anim = GetComponent<Animator> ();
 	}
 
 	void Update(){
-
-		if(bull.velocity.magnitude > maxSpeed)
+//		if (playerMoving == true && facingLeft == true) {
+//			Vector2 theScale = bull.transform.localScale;
+//			theScale.x *= -1;
+//			bull.transform.localScale = theScale;
+//		}
+			if(bull.velocity.magnitude > maxSpeed)
 		{
 			bull.velocity = bull.velocity.normalized * maxSpeed;
 		}
 
 		//liikkuminen
 		if (Input.GetKey (KeyCode.LeftArrow)) {
-			bull.AddForce (-18 * vertical, ForceMode2D.Impulse);
+			bull.AddForce (-30 * vertical, ForceMode2D.Force);
+			anim.SetFloat("speed", Mathf.Abs(bull.velocity.x));
 		}
 		if (Input.GetKey (KeyCode.RightArrow)) {
-			
-			bull.AddForce(18 * vertical, ForceMode2D.Impulse);
+			anim.SetFloat("speed", Mathf.Abs(bull.velocity.x));
+			bull.AddForce(30 * vertical, ForceMode2D.Force);
 		}
-		if (Input.GetKeyDown (KeyCode.Space)) {
+		if (Input.GetKeyDown (KeyCode.Space) && isJumping == false) {
 			Pomppaus ();
+			}
 		}
-		if (Input.GetKey (KeyCode.DownArrow)) {
-			bull.transform.Translate (0, -0.001f * bullSpeed, 0);
-		}
+	void FixedUpdate(){
+		float h = Input.GetAxis ("Horizontal");
+		if (h < 0 && !facingLeft)
+			reverseImage ();
+		else if (h > 0 && facingLeft)
+			reverseImage ();
 	}
-
-	//hyppiminen
-	private Vector2 jumppi = new Vector2 (0f, 10f);
-	private bool isJumping = false;
 
 	public void Pomppaus ()
 	{
 
 		if (Input.GetKeyDown (KeyCode.Space) && isJumping == false) {
-			bull.AddForce (14 * jumppi, ForceMode2D.Impulse);
+			bull.AddForce (29 * jumppi, ForceMode2D.Impulse);
 			isJumping = true; 
 		} 
 	}
 
- 
-//	public void OnTriggerEnter (Collider player, Collider levelEnd)
-//	{
-//		if (player.tag == "Player" && levelEnd.tag == "LevelEnd") {
-//			Application.LoadLevel ("levelSelectLevelVantaaOpened");
-//	}
-//}
+	void reverseImage()
+	{
+		// Get and store the local scale of the RigidBody2D
+		Vector2 theScale = bull.transform.localScale;
+		facingLeft = !facingLeft;
+		// Flip it around the other way
+		theScale.x *= -1;
+		bull.transform.localScale = theScale;
+	}
 }
-
