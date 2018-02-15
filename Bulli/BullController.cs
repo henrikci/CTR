@@ -23,17 +23,14 @@ public class BullController : MonoBehaviour {
 	}
 
 	void Start(){
+		//Haetaan objektiviittaukset
 		bull = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator> ();
 	}
 
 	void Update(){
-//		if (playerMoving == true && facingLeft == true) {
-//			Vector2 theScale = bull.transform.localScale;
-//			theScale.x *= -1;
-//			bull.transform.localScale = theScale;
-//		}
-			if(bull.velocity.magnitude > maxSpeed)
+		//bullin maksiminopeuden valvonta ja säätö	
+		if(bull.velocity.magnitude > maxSpeed)
 		{
 			bull.velocity = bull.velocity.normalized * maxSpeed;
 		}
@@ -52,6 +49,7 @@ public class BullController : MonoBehaviour {
 			}
 		}
 	void FixedUpdate(){
+		//Tässä pyöritetään animaatiota kulkusuunnasta riippuen
 		float h = Input.GetAxis ("Horizontal");
 		if (h < 0 && !facingLeft)
 			reverseImage ();
@@ -59,6 +57,7 @@ public class BullController : MonoBehaviour {
 			reverseImage ();
 	}
 
+	//Hyppymekaniikka
 	public void Pomppaus ()
 	{
 
@@ -67,7 +66,7 @@ public class BullController : MonoBehaviour {
 			isJumping = true; 
 		} 
 	}
-
+	//Metodi, jolla Bullin juoksuanimaatio käännetään y-akselin suhteen peilikuvaksi
 	void reverseImage()
 	{
 		// Get and store the local scale of the RigidBody2D
