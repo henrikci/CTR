@@ -9,7 +9,7 @@ public class SceneController : MonoBehaviour {
 	public void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.tag == "Player") {
-			SceneManager.LoadScene("levelSelectLevelVantaaOpened", LoadSceneMode.Additive);
+			SceneManager.LoadScene("levelSelectLevelVantaaOpened", LoadSceneMode.Single);
 		}
 	}
 }
