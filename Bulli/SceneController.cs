@@ -5,11 +5,20 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SceneController : MonoBehaviour {
+	
+	// Use this for initialization
+	void Start ()
+	{
 
+	}
 	public void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.tag == "Player") {
-			SceneManager.LoadScene("levelSelectLevelVantaaOpened", LoadSceneMode.Single);
+			
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1, LoadSceneMode.Single);
+	
 		}
 	}
+
+
 }
