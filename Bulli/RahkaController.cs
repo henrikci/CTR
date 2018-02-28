@@ -5,6 +5,7 @@ using UnityEngine;
 public class RahkaController : MonoBehaviour {
 
 	public static int amountOfRahka;
+		
 	private GameObject rahka;
 	public void OnTriggerEnter2D(Collider2D rahka)
 	{

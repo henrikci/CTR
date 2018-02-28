@@ -6,23 +6,22 @@ using System.Threading;
 using System;
 
 
-public class BullController : MonoBehaviour {
+public class BullElevatorController : MonoBehaviour {
 	//instanssimuuttujat
 	private Rigidbody2D bull;
-	private static int amountOfDeaths;
 	private Animator anim;
 	private bool facingLeft = false;
 	private bool playerMoving;
 	private float maxSpeed = 140f;
 	private Vector2 vertical = new Vector2 (120f,0f);
 	//hyppiminen
-	private Vector2 jumppi = new Vector2 (0f, 150f);
+	private Vector2 jumppi = new Vector2 (0f, 250f);
 	private bool isJumping = false;
 	//törmäys ja hypyn nollaaminen
-//	void OnCollisionEnter2D(Collision2D collision){
-//		isJumping = false;
-//	}
-//
+	void OnCollisionEnter2D(Collision2D collision){
+		isJumping = false;
+	}
+
 	void Start(){
 		//Haetaan objektiviittaukset
 		bull = GetComponent<Rigidbody2D>();
@@ -47,8 +46,8 @@ public class BullController : MonoBehaviour {
 		}
 		if (Input.GetKeyDown (KeyCode.Space) && isJumping == false) {
 			Pomppaus ();
-			}
 		}
+	}
 	void FixedUpdate(){
 		//Tässä pyöritetään animaatiota kulkusuunnasta riippuen
 		float h = Input.GetAxis ("Horizontal");
@@ -77,19 +76,4 @@ public class BullController : MonoBehaviour {
 		theScale.x *= -1;
 		bull.transform.localScale = theScale;
 	}
-
-	public void Die(){	
-		Vector3 deathVector = new Vector3 (10, 10, 0);
-		bull.transform.position = deathVector;
-		amountOfDeaths++;
-	}
-
-	void OnCollisionEnter2D(Collision2D vaga) {
-		isJumping = false;
-
-		if ((vaga.gameObject.tag == "vagabond") && vaga.gameObject.name == "vagabond") {
-			Die ();
-		}
-
-}
 }
