@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButtons : MonoBehaviour {
 
+	//scenejen lataaminen indeksiensä perusteella
 	public void LoadByIndex (int sceneIndex)
 	{
 		SceneManager.LoadScene (sceneIndex);

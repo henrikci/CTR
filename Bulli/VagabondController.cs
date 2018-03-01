@@ -6,15 +6,12 @@ public class VagabondController : MonoBehaviour {
 
 	public Transform pointA;
 	public Transform pointB;
-	public Transform whoToFollow;
-	public static int amountOfDeaths;
 	public bool  isRight = true;
-	public bool followPlayer;
 	public bool isPatroling;
 	private float vagabondSpeed = 1.8f;
-	private float vagabondChaseSpeed = 2f;
 	public Transform player;
 	public bool superPatrol = false;
+	public bool nikoPatrol = false;
 	private Vector3 pointAPosition;
 	private Vector3 pointBPosition;
 
@@ -25,24 +22,12 @@ public class VagabondController : MonoBehaviour {
 	}
 
 	void Update() {
-		if (followPlayer) {
-			FollowThePlayer ();
-		} else if (isPatroling && superPatrol){
+		 if (isPatroling && superPatrol) {
 			SuperPatrol ();
-
+		}else if (isPatroling && nikoPatrol) {
+			NikoPatrol ();
 		} else if (isPatroling) {
 			Patrol ();
-		}
-	}
-
-	public void FollowThePlayer ()
-	{
-		followPlayer = true;
-		Vector3 newPosition = new Vector3(whoToFollow.position.x, 0,0 );
-
-		transform.LookAt (player);
-		if (Vector3.Distance (transform.position, player.position) >= 1) {
-			transform.position += transform.forward * vagabondChaseSpeed * Time.deltaTime;
 		}
 	}
 
@@ -65,6 +50,11 @@ public class VagabondController : MonoBehaviour {
 	}
 	public void SuperPatrol() {
 		this.vagabondSpeed = 7f;
+		Patrol ();
+	}
+
+	public void NikoPatrol(){
+		this.vagabondSpeed = 3.5f;
 		Patrol ();
 	}
 		

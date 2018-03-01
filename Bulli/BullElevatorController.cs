@@ -14,6 +14,7 @@ public class BullElevatorController : MonoBehaviour {
 	private bool playerMoving;
 	private float maxSpeed = 140f;
 	private Vector2 vertical = new Vector2 (120f,0f);
+	private bool movementAllowed = true;
 	//hyppiminen
 	private Vector2 jumppi = new Vector2 (0f, 250f);
 	private bool isJumping = false;
@@ -30,22 +31,23 @@ public class BullElevatorController : MonoBehaviour {
 
 	void Update(){
 		//bullin maksiminopeuden valvonta ja säätö	
-		if(bull.velocity.magnitude > maxSpeed)
-		{
+		if (bull.velocity.magnitude > maxSpeed) {
 			bull.velocity = bull.velocity.normalized * maxSpeed;
 		}
 
 		//liikkuminen
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			bull.AddForce (-30 * vertical, ForceMode2D.Force);
-			anim.SetFloat("speed", Mathf.Abs(bull.velocity.x));
-		}
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			anim.SetFloat("speed", Mathf.Abs(bull.velocity.x));
-			bull.AddForce(30 * vertical, ForceMode2D.Force);
-		}
-		if (Input.GetKeyDown (KeyCode.Space) && isJumping == false) {
-			Pomppaus ();
+		if (movementAllowed) {
+			if (Input.GetKey (KeyCode.LeftArrow)) {
+				bull.AddForce (-30 * vertical, ForceMode2D.Force);
+				anim.SetFloat ("speed", Mathf.Abs (bull.velocity.x));
+			}
+			if (Input.GetKey (KeyCode.RightArrow)) {
+				anim.SetFloat ("speed", Mathf.Abs (bull.velocity.x));
+				bull.AddForce (30 * vertical, ForceMode2D.Force);
+			}
+			if (Input.GetKeyDown (KeyCode.Space) && isJumping == false) {
+				Pomppaus ();
+			}
 		}
 	}
 	void FixedUpdate(){
@@ -76,4 +78,13 @@ public class BullElevatorController : MonoBehaviour {
 		theScale.x *= -1;
 		bull.transform.localScale = theScale;
 	}
+
+	public void DisableMovement(){
+		movementAllowed = false;
+	}
+
+	public void EnableMovement(){
+		movementAllowed = true;
+	}
+
 }

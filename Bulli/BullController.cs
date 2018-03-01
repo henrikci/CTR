@@ -11,6 +11,7 @@ public class BullController : MonoBehaviour {
 	private Rigidbody2D bull;
 	private static int amountOfDeaths;
 	private Animator anim;
+	public SignController signs;
 	private bool facingLeft = false;
 	private bool playerMoving;
 	private float maxSpeed = 140f;
@@ -18,37 +19,36 @@ public class BullController : MonoBehaviour {
 	//hyppiminen
 	private Vector2 jumppi = new Vector2 (0f, 150f);
 	private bool isJumping = false;
-	//törmäys ja hypyn nollaaminen
-//	void OnCollisionEnter2D(Collision2D collision){
-//		isJumping = false;
-//	}
-//
+	public bool movementAllowed;
+
 	void Start(){
 		//Haetaan objektiviittaukset
+		signs = FindObjectOfType(typeof(SignController)) as SignController;	
 		bull = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator> ();
 	}
 
+
 	void Update(){
 		//bullin maksiminopeuden valvonta ja säätö	
-		if(bull.velocity.magnitude > maxSpeed)
-		{
+		if (bull.velocity.magnitude > maxSpeed) {
 			bull.velocity = bull.velocity.normalized * maxSpeed;
 		}
-
-		//liikkuminen
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			bull.AddForce (-30 * vertical, ForceMode2D.Force);
-			anim.SetFloat("speed", Mathf.Abs(bull.velocity.x));
-		}
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			anim.SetFloat("speed", Mathf.Abs(bull.velocity.x));
-			bull.AddForce(30 * vertical, ForceMode2D.Force);
-		}
-		if (Input.GetKeyDown (KeyCode.Space) && isJumping == false) {
-			Pomppaus ();
+		if (movementAllowed) {
+			//liikkuminen
+			if (Input.GetKey (KeyCode.LeftArrow)) {
+				bull.AddForce (-30 * vertical, ForceMode2D.Force);
+				anim.SetFloat ("speed", Mathf.Abs (bull.velocity.x));
+			}
+			if (Input.GetKey (KeyCode.RightArrow)) {
+				anim.SetFloat ("speed", Mathf.Abs (bull.velocity.x));
+				bull.AddForce (30 * vertical, ForceMode2D.Force);
+			}
+			if (Input.GetKeyDown (KeyCode.Space) && isJumping == false) {
+				Pomppaus ();
 			}
 		}
+	}
 	void FixedUpdate(){
 		//Tässä pyöritetään animaatiota kulkusuunnasta riippuen
 		float h = Input.GetAxis ("Horizontal");
@@ -78,18 +78,30 @@ public class BullController : MonoBehaviour {
 		bull.transform.localScale = theScale;
 	}
 
+	//kuolemismekaniikka
 	public void Die(){	
-		Vector3 deathVector = new Vector3 (10, 10, 0);
+		
+		Vector3 deathVector = new Vector3 (100, 10, 0);
 		bull.transform.position = deathVector;
 		amountOfDeaths++;
+		StartCoroutine(signs.DeathSign());
 	}
-
+		
+	//hypyn nollaaminen ja kuoleminen osuttaessa viholliseen
 	void OnCollisionEnter2D(Collision2D vaga) {
 		isJumping = false;
 
 		if ((vaga.gameObject.tag == "vagabond") && vaga.gameObject.name == "vagabond") {
 			Die ();
 		}
+	}
 
-}
+	public void DisableMovement(){
+		movementAllowed = false;
+	}
+
+	public void EnableMovement(){
+		movementAllowed = true;
+	}
+
 }
