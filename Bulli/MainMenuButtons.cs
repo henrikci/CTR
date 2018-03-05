@@ -10,5 +10,12 @@ public class MainMenuButtons : MonoBehaviour {
 	{
 		SceneManager.LoadScene (sceneIndex);
 	}
+
+	public void ExitTheGame()
+	{
+		Application.Quit ();
+
+	}
+
 }
 

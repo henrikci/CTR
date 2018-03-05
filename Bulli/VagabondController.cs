@@ -57,5 +57,10 @@ public class VagabondController : MonoBehaviour {
 		this.vagabondSpeed = 3.5f;
 		Patrol ();
 	}
+
+	public void PolicePatrol(){
+		this.vagabondSpeed = 2f;
+		Patrol ();
+	}
 		
 }

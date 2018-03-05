@@ -6,32 +6,26 @@ using System.Threading;
 using System;
 
 
-public class BullController : MonoBehaviour {
+public class BullTrainController : MonoBehaviour {
 	//instanssimuuttujat
 	private Rigidbody2D bull;
 	private static int amountOfDeaths;
 	private Animator anim;
-	public AudioClip jumpSound;
-	public AudioClip deathSound;
-	public SignController signs;
+	public SignTrainController signs;
 	private bool facingLeft = false;
 	private bool playerMoving;
-	private float maxSpeed = 140f;
-	private AudioSource audioSystem;
-	private Vector2 vertical = new Vector2 (120f,0f);
+	private float maxSpeed = 700f;
+	private Vector2 vertical = new Vector2 (600f,0f);
 	//hyppiminen
-
+	private Vector2 jumppi = new Vector2 (0f, 750f);
 	private bool isJumping = false;
 	public bool movementAllowed;
 
 	void Start(){
 		//Haetaan objektiviittaukset
-		signs = FindObjectOfType(typeof(SignController)) as SignController;	
+		signs = FindObjectOfType(typeof(SignTrainController)) as SignTrainController;	
 		bull = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator> ();
-		audioSystem = GetComponent<AudioSource> ();
-
-
 	}
 
 
@@ -51,7 +45,10 @@ public class BullController : MonoBehaviour {
 				bull.AddForce (30 * vertical, ForceMode2D.Force);
 			}
 			if (Input.GetKeyDown (KeyCode.Space) && isJumping == false) {
-				Jump ();
+				Pomppaus ();
+			}
+			if (Input.GetKey (KeyCode.DownArrow)) {
+				bull.AddForce (-20 * jumppi, ForceMode2D.Force);
 			}
 		}
 	}
@@ -64,15 +61,12 @@ public class BullController : MonoBehaviour {
 			reverseImage ();
 	}
 
-	//Jumping mechanics
-	private Vector2 jump = new Vector2 (0f, 150f);
-	public void Jump ()
+	//Hyppymekaniikka
+	public void Pomppaus ()
 	{
-		audioSystem.clip = jumpSound;
 
 		if (Input.GetKeyDown (KeyCode.Space) && isJumping == false) {
-			audioSystem.Play ();
-			bull.AddForce (29 * jump, ForceMode2D.Impulse);
+			bull.AddForce (29 * jumppi, ForceMode2D.Impulse);
 			isJumping = true; 
 		} 
 	}
@@ -89,21 +83,32 @@ public class BullController : MonoBehaviour {
 
 	//kuolemismekaniikka
 	public void Die(){	
-		audioSystem.clip = deathSound;
-		audioSystem.Play ();
+
 		Vector3 deathVector = new Vector3 (100, 10, 0);
 		bull.transform.position = deathVector;
 		amountOfDeaths++;
 		StartCoroutine(signs.DeathSign());
 	}
-		
-	//hypyn nollaaminen ja kuoleminen osuttaessa viholliseen
-	void OnCollisionEnter2D(Collision2D vaga) {
-		isJumping = false;
 
-		if (vaga.gameObject.tag == "vagabond") {
-			Die ();
+	//hypyn nollaaminen ja kuoleminen osuttaessa viholliseen
+
+
+	void OnCollisionEnter2D(Collision2D collider) {
+		if (collider.gameObject.tag == "roof") {
+			isJumping = true;
 		}
+		isJumping = false;
+		if (collider.gameObject.tag == "police") {
+			DieOnTheTrain ();
+		}
+
+	}
+
+	public void DieOnTheTrain (){
+		SceneManager.LoadScene (6);
+		signs.DisableSignCoroutines ();
+		EnableMovement ();
+
 	}
 
 	public void DisableMovement(){
