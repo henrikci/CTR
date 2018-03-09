@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 /// <summary>
 /// Main menu button controller script.
 /// </summary>
 public class MainMenuButtons : MonoBehaviour {
+
 
 	/// <summary>
 	/// Loads the scenes by their index numbers.
@@ -24,6 +26,5 @@ public class MainMenuButtons : MonoBehaviour {
 		Application.Quit ();
 
 	}
-
 }
 

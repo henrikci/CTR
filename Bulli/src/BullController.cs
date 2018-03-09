@@ -12,7 +12,7 @@ public class BullController : MonoBehaviour
 	/// Instance variables
 	/// </summary>
 	public Rigidbody2D bull;
-	private static int amountOfDeaths;
+	public static int amountOfDeaths;
 	private Animator anim;
 	public bool isMoving;
 	public AudioClip jumpSound;
@@ -150,5 +150,21 @@ public class BullController : MonoBehaviour
 	public bool CheckIfJumping ()
 	{
 		return isJumping;
+	}
+
+	/// <summary>
+	/// Gets the amount of deaths.
+	/// </summary>
+	/// <returns>The amount of deaths.</returns>
+	public string GetAmountOfDeaths(){
+		return amountOfDeaths.ToString ();
+
+	}
+	/// <summary>
+	/// Increases the amount of deaths by one.
+	/// </summary>
+	public int IncreaseAmountOfDeaths(int amount){
+		amountOfDeaths = amountOfDeaths + amount;
+		return amountOfDeaths;
 	}
 }

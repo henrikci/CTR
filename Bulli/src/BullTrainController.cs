@@ -47,13 +47,15 @@ public class BullTrainController : MonoBehaviour
 				TrainJump ();
 			}
 			if (Input.GetKey (KeyCode.DownArrow)) {
-				bull.AddForce (-20 * trainJump, ForceMode2D.Force);
+				MoveDown ();
 			}
 		}
 	}
 
 
-	//Hyppymekaniikka
+	/// <summary>
+	/// Method for jumping on the train
+	/// </summary>
 	public void TrainJump ()
 	{
 
@@ -63,6 +65,12 @@ public class BullTrainController : MonoBehaviour
 		} 
 	}
 
+	/// <summary>
+	/// Moves the player down.
+	/// </summary>
+	public void MoveDown(){
+		bull.AddForce (-20 * trainJump, ForceMode2D.Force);
+	}
 	/// <summary>
 	/// Check collision for resetting jumping, forbidding double jumps from the roof and dying if the conductor touches the player
 	/// </summary>
@@ -106,7 +114,7 @@ public class BullTrainController : MonoBehaviour
 		SceneManager.LoadScene (6);
 		signs.DisableSignCoroutines ();
 		EnableMovement ();
-
+		BullController.amountOfDeaths++;
 	}
 
 	/// <summary>

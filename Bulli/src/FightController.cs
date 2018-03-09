@@ -11,12 +11,10 @@ public class FightController : MonoBehaviour
 	/// <summary>
 	/// Instance variablse
 	/// </summary>
+	public static int DeathsInTheGym = 0;
 	public Sprite ryuSpriteIdle;
-	// Drag your first sprite here
 	public Sprite ryuSpriteKick;
-	// Drag your second sprite here
 	public Sprite ryuSpriteDead;
-	// Drag your second sprite here
 	private MorssiController mC;
 	private bool bullIsDead = false;
 	private SpriteRenderer spriteRendererBull;
@@ -104,6 +102,7 @@ public class FightController : MonoBehaviour
 	{
 		spriteRendererBull.sprite = ryuSpriteDead; // idle to kick
 		bullIsDead = true;
+		BullController.amountOfDeaths++;
 		SceneManager.LoadScene (10);
 	}
 

@@ -10,18 +10,15 @@ public class CreditMenuButtons : MonoBehaviour {
 	/// <summary>
 	/// Instance variables
 	/// </summary>
-	private BullController statistics;
-	private RahkaController rahkaStats;
+
 	private Button deathCount;
 	private Button rahkaCount;
 	public Text deathText;
 	public Text rahkaText;
-	public int finalDeathCount;
-	public int finalRahkaCount;
+	private int finalDeathCount;
+	private int finalRahkaCount;
 	void Start(){
 		///Get object references
-		statistics = FindObjectOfType (typeof(BullController)) as BullController;
-		rahkaStats = FindObjectOfType (typeof(RahkaController)) as RahkaController;
 		deathCount = GameObject.Find ("deathCount").GetComponent<Button> ();
 		rahkaCount = GameObject.Find ("rahkaCount").GetComponent<Button> ();
 		GetFinalDeathCount ();
@@ -36,15 +33,19 @@ public class CreditMenuButtons : MonoBehaviour {
 		Application.Quit ();
 
 	}
-
+	/// <summary>
+	/// Gets the final death count and converts to string
+	/// </summary>
 	public void GetFinalDeathCount(){
 		finalDeathCount = BullController.amountOfDeaths;
 		deathCount.GetComponentInChildren<Text> ().text = finalDeathCount.ToString();
 	}
 
+	/// <summary>
+	/// Gets the final rahka count and converts to string
+	/// </summary>
 	public void GetFinalRahkaCount(){
 		finalRahkaCount = RahkaController.amountOfRahka;
-
 		rahkaCount.GetComponentInChildren<Text> ().text = finalRahkaCount.ToString ();
 	}
 }

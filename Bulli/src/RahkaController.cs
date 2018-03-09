@@ -46,5 +46,13 @@ public class RahkaController : MonoBehaviour {
 		rahkaSpriteRenderer.sprite = rahkaSprites [amountOfRahka];
 
 	}
+
+	/// <summary>
+	/// Gets the amount of rahka the player has collected.
+	/// </summary>
+	/// <returns>The amount of rahka.</returns>
+	public string GetAmountOfRahka(){
+		return amountOfRahka.ToString();
+	}
 }
 
